@@ -21,7 +21,7 @@ export default withAuth(
     // the db sets the database provider - we're using sqlite for the fastest startup experience
     db: {
       provider: "postgresql",
-      url: "postgres://llnzktiowcilrq:92029adbdf0bba38a5b738dd87ed49ea33d39ebfd6183265cb7ce6730f3071fc@ec2-34-231-183-74.compute-1.amazonaws.com:5432/d59bvols5gfq8",
+      url: process.env.DATABASE_URL,
       enableLogging: true,
       idField: { kind: "uuid" },
     },
