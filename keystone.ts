@@ -26,7 +26,7 @@ export default withAuth(
       idField: { kind: "uuid" },
     },
     server: {
-      port: 3001,
+      port: process.env.NODE_ENV === "production" ? 3000 : 3001,
       cors: { origin: ["*"], credentials: true },
     },
     images: {
