@@ -27,6 +27,7 @@ export default withAuth(
     },
     server: {
       port: 3001,
+      cors: { origin: ["*"], credentials: true },
     },
     images: {
       upload: "local",

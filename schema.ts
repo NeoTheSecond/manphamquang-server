@@ -1,24 +1,7 @@
-/*
-Welcome to the schema! The schema is the heart of Keystone.
-
-Here we define our 'lists', which will then be used both for the GraphQL
-API definition, our database tables, and our Admin UI layout.
-
-Some quick definitions to help out:
-A list: A definition of a collection of fields with a name. For the starter
-  we have `User`, `Post`, and `Tag` lists.
-A field: The individual bits of data on your list, each with its own type.
-  you can see some of the lists in what we use below.
-
-*/
-
 // Like the `config` function we use in keystone.ts, we use functions
 // for putting in our config so we get useful errors. With typescript,
 // we get these even before code runs.
 import { list } from "@keystone-6/core";
-
-// We're using some common fields in the starter. Check out https://keystonejs.com/docs/apis/fields#fields-api
-// for the full list of fields.
 import {
   text,
   relationship,
@@ -26,9 +9,6 @@ import {
   timestamp,
   select,
 } from "@keystone-6/core/fields";
-// The document field is a more complicated field, so it's in its own package
-// Keystone aims to have all the base field types, but you can make your own
-// custom ones.
 import { document } from "@keystone-6/fields-document";
 import { cloudinaryImage } from "@keystone-6/cloudinary";
 
@@ -153,6 +133,41 @@ export const lists: Lists = {
           folder: process.env.CLOUDINARY_API_FOLDER,
         },
       }),
+    },
+  }),
+  Experience: list({
+    fields: {
+      title: text(),
+      location: text(),
+      type: text(), // should use select
+      duration: text(),
+      description: text(),
+      cover_image: cloudinaryImage({
+        cloudinary: {
+          cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+          apiKey: process.env.CLOUDINARY_API_KEY,
+          apiSecret: process.env.CLOUDINARY_API_SECRET,
+          folder: process.env.CLOUDINARY_API_FOLDER,
+        },
+      }),
+      technologies: relationship({
+        ref: "Technology.experiences",
+        ui: {
+          displayMode: "cards",
+          cardFields: ["name"],
+          inlineEdit: { fields: ["name"] },
+          linkToItem: true,
+          inlineConnect: true,
+          inlineCreate: { fields: ["name"] },
+        },
+        many: true,
+      }),
+    },
+  }),
+  Technology: list({
+    fields: {
+      name: text(),
+      experiences: relationship({ ref: "Experience.technologies" }),
     },
   }),
 };

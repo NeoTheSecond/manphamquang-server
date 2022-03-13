@@ -412,6 +412,142 @@ input EducationCreateInput {
   cover_image: Upload
 }
 
+type Experience {
+  id: ID!
+  title: String
+  location: String
+  type: String
+  duration: String
+  description: String
+  cover_image: CloudinaryImage_File
+  technologies(
+    where: TechnologyWhereInput! = {}
+    orderBy: [TechnologyOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Technology!]
+  technologiesCount(where: TechnologyWhereInput! = {}): Int
+}
+
+input ExperienceWhereUniqueInput {
+  id: ID
+}
+
+input ExperienceWhereInput {
+  AND: [ExperienceWhereInput!]
+  OR: [ExperienceWhereInput!]
+  NOT: [ExperienceWhereInput!]
+  id: IDFilter
+  title: StringFilter
+  location: StringFilter
+  type: StringFilter
+  duration: StringFilter
+  description: StringFilter
+  technologies: TechnologyManyRelationFilter
+}
+
+input TechnologyManyRelationFilter {
+  every: TechnologyWhereInput
+  some: TechnologyWhereInput
+  none: TechnologyWhereInput
+}
+
+input ExperienceOrderByInput {
+  id: OrderDirection
+  title: OrderDirection
+  location: OrderDirection
+  type: OrderDirection
+  duration: OrderDirection
+  description: OrderDirection
+}
+
+input ExperienceUpdateInput {
+  title: String
+  location: String
+  type: String
+  duration: String
+  description: String
+  cover_image: Upload
+  technologies: TechnologyRelateToManyForUpdateInput
+}
+
+input TechnologyRelateToManyForUpdateInput {
+  disconnect: [TechnologyWhereUniqueInput!]
+  set: [TechnologyWhereUniqueInput!]
+  create: [TechnologyCreateInput!]
+  connect: [TechnologyWhereUniqueInput!]
+}
+
+input ExperienceUpdateArgs {
+  where: ExperienceWhereUniqueInput!
+  data: ExperienceUpdateInput!
+}
+
+input ExperienceCreateInput {
+  title: String
+  location: String
+  type: String
+  duration: String
+  description: String
+  cover_image: Upload
+  technologies: TechnologyRelateToManyForCreateInput
+}
+
+input TechnologyRelateToManyForCreateInput {
+  create: [TechnologyCreateInput!]
+  connect: [TechnologyWhereUniqueInput!]
+}
+
+type Technology {
+  id: ID!
+  name: String
+  experiences: Experience
+}
+
+input TechnologyWhereUniqueInput {
+  id: ID
+}
+
+input TechnologyWhereInput {
+  AND: [TechnologyWhereInput!]
+  OR: [TechnologyWhereInput!]
+  NOT: [TechnologyWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  experiences: ExperienceWhereInput
+}
+
+input TechnologyOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+}
+
+input TechnologyUpdateInput {
+  name: String
+  experiences: ExperienceRelateToOneForUpdateInput
+}
+
+input ExperienceRelateToOneForUpdateInput {
+  create: ExperienceCreateInput
+  connect: ExperienceWhereUniqueInput
+  disconnect: Boolean
+}
+
+input TechnologyUpdateArgs {
+  where: TechnologyWhereUniqueInput!
+  data: TechnologyUpdateInput!
+}
+
+input TechnologyCreateInput {
+  name: String
+  experiences: ExperienceRelateToOneForCreateInput
+}
+
+input ExperienceRelateToOneForCreateInput {
+  create: ExperienceCreateInput
+  connect: ExperienceWhereUniqueInput
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -448,6 +584,24 @@ type Mutation {
   updateEducations(data: [EducationUpdateArgs!]!): [Education]
   deleteEducation(where: EducationWhereUniqueInput!): Education
   deleteEducations(where: [EducationWhereUniqueInput!]!): [Education]
+  createExperience(data: ExperienceCreateInput!): Experience
+  createExperiences(data: [ExperienceCreateInput!]!): [Experience]
+  updateExperience(
+    where: ExperienceWhereUniqueInput!
+    data: ExperienceUpdateInput!
+  ): Experience
+  updateExperiences(data: [ExperienceUpdateArgs!]!): [Experience]
+  deleteExperience(where: ExperienceWhereUniqueInput!): Experience
+  deleteExperiences(where: [ExperienceWhereUniqueInput!]!): [Experience]
+  createTechnology(data: TechnologyCreateInput!): Technology
+  createTechnologies(data: [TechnologyCreateInput!]!): [Technology]
+  updateTechnology(
+    where: TechnologyWhereUniqueInput!
+    data: TechnologyUpdateInput!
+  ): Technology
+  updateTechnologies(data: [TechnologyUpdateArgs!]!): [Technology]
+  deleteTechnology(where: TechnologyWhereUniqueInput!): Technology
+  deleteTechnologies(where: [TechnologyWhereUniqueInput!]!): [Technology]
   endSession: Boolean!
   authenticateUserWithPassword(
     email: String!
@@ -510,6 +664,22 @@ type Query {
   ): [Education!]
   education(where: EducationWhereUniqueInput!): Education
   educationsCount(where: EducationWhereInput! = {}): Int
+  experiences(
+    where: ExperienceWhereInput! = {}
+    orderBy: [ExperienceOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Experience!]
+  experience(where: ExperienceWhereUniqueInput!): Experience
+  experiencesCount(where: ExperienceWhereInput! = {}): Int
+  technologies(
+    where: TechnologyWhereInput! = {}
+    orderBy: [TechnologyOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Technology!]
+  technology(where: TechnologyWhereUniqueInput!): Technology
+  technologiesCount(where: TechnologyWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }

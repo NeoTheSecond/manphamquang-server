@@ -45,3 +45,23 @@ model Education {
   location    String @default("")
   cover_image Json?
 }
+
+model Experience {
+  id           String       @id @default(uuid()) @postgresql.Uuid
+  title        String       @default("")
+  location     String       @default("")
+  type         String       @default("")
+  duration     String       @default("")
+  description  String       @default("")
+  cover_image  Json?
+  technologies Technology[] @relation("Technology_experiences")
+}
+
+model Technology {
+  id            String      @id @default(uuid()) @postgresql.Uuid
+  name          String      @default("")
+  experiences   Experience? @relation("Technology_experiences", fields: [experiencesId], references: [id])
+  experiencesId String?     @map("experiences") @postgresql.Uuid
+
+  @@index([experiencesId])
+}
