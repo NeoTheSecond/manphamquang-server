@@ -14,6 +14,7 @@ import { lists } from "./schema";
 
 // Keystone auth is configured separately - check out the basic auth setup we are importing from our auth file.
 import { withAuth, session } from "./auth";
+import { refreshSpotifyToken } from "./routes/refreshSpotifyToken";
 
 export default withAuth(
   // Using the config function helps typescript guide you to the available options.
@@ -27,7 +28,10 @@ export default withAuth(
     },
     server: {
       port: process.env.PORT || 3001,
-      cors: { origin: ["*"], credentials: true },
+      cors: { origin: ["http://localhost:3000", "*"], credentials: true },
+      extendExpressApp(app, context) {
+        app.get("/refresh_spotify_token", refreshSpotifyToken);
+      },
     },
     images: {
       upload: "local",
