@@ -13,8 +13,9 @@ generator client {
 }
 
 model Spotify {
-  id    Int    @id
-  token String @default("")
+  id           Int    @id
+  token        String @default("")
+  refreshToken String @default("")
 }
 
 model User {

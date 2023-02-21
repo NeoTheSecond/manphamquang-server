@@ -4,6 +4,7 @@
 type Spotify {
   id: ID!
   token: String
+  refreshToken: String
 }
 
 input SpotifyWhereUniqueInput {
@@ -16,6 +17,7 @@ input SpotifyWhereInput {
   NOT: [SpotifyWhereInput!]
   id: IDFilter
   token: StringFilter
+  refreshToken: StringFilter
 }
 
 input IDFilter {
@@ -66,6 +68,7 @@ input NestedStringFilter {
 input SpotifyOrderByInput {
   id: OrderDirection
   token: OrderDirection
+  refreshToken: OrderDirection
 }
 
 enum OrderDirection {
@@ -75,6 +78,7 @@ enum OrderDirection {
 
 input SpotifyUpdateInput {
   token: String
+  refreshToken: String
 }
 
 input SpotifyUpdateArgs {
@@ -84,6 +88,7 @@ input SpotifyUpdateArgs {
 
 input SpotifyCreateInput {
   token: String
+  refreshToken: String
 }
 
 type User {

@@ -15,6 +15,9 @@ import { lists } from "./schema";
 // Keystone auth is configured separately - check out the basic auth setup we are importing from our auth file.
 import { withAuth, session } from "./auth";
 import { refreshSpotifyToken } from "./routes/refreshSpotifyToken";
+import callback from "./routes/callback";
+import { loginSpotify } from "./routes/loginSpotify";
+var cookieParser = require("cookie-parser");
 
 export default withAuth(
   // Using the config function helps typescript guide you to the available options.
@@ -28,8 +31,25 @@ export default withAuth(
     },
     server: {
       port: process.env.PORT || 3001,
-      cors: { origin: ["http://localhost:3000", "*"], credentials: true },
+      cors: {
+        origin: ["http://localhost:3001", "http://localhost:3000", "*"],
+        credentials: true,
+      },
       extendExpressApp(app, context) {
+        app.use(cookieParser());
+        app.use("/callback", async (req, res, next) => {
+          /*
+          WARNING: normally if you're adding custom properties to an
+          express request type, you might extend the global Express namespace...
+          ... we're not doing that here because we're in a Typescript monorepo
+          so we're casting the request instead :)
+        */
+          (req as any).context = await context.withRequest(req, res);
+          next();
+        });
+
+        app.get("/login", loginSpotify);
+        app.get("/callback", callback);
         app.get("/refresh_spotify_token", refreshSpotifyToken);
       },
     },

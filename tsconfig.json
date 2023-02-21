@@ -6,6 +6,7 @@
     "noEmit": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "typeRoots": ["./global.d.ts", "./node_modules/@types"]
   }
 }

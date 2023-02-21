@@ -28,6 +28,7 @@ export const lists: Lists = {
     isSingleton: true,
     fields: {
       token: text(),
+      refreshToken: text(),
     },
   }),
   // Here we define the user list.
