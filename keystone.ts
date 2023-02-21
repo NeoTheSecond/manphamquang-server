@@ -37,7 +37,7 @@ export default withAuth(
       },
       extendExpressApp(app, context) {
         app.use(cookieParser());
-        app.use("/callback", async (req, res, next) => {
+        app.use("/spotify", async (req, res, next) => {
           /*
           WARNING: normally if you're adding custom properties to an
           express request type, you might extend the global Express namespace...
@@ -49,8 +49,8 @@ export default withAuth(
         });
 
         app.get("/login", loginSpotify);
-        app.get("/callback", callback);
-        app.get("/refresh_spotify_token", refreshSpotifyToken);
+        app.get("/spotify/callback", callback);
+        app.get("/spotify/refresh_spotify_token", refreshSpotifyToken);
       },
     },
     images: {

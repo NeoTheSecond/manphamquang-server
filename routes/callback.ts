@@ -59,8 +59,6 @@ export default function callback(req: Request, res: Response) {
           };
 
           if (access_token && refresh_token) {
-            console.clear();
-            console.log(context);
             context.db.Spotify.updateOne({
               where: {
                 id: "1",

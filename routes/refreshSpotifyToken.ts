@@ -1,8 +1,10 @@
 import type { Request, Response } from "express";
+import type { Context } from ".keystone/types";
 import axios from "axios";
 import url from "url";
 
 export async function refreshSpotifyToken(req: Request, res: Response) {
+  const { context } = req as typeof req & { context: Context };
   var refresh_token = req.query.refresh_token;
   if (typeof refresh_token !== "string") {
     // throw new Error("must provide refresh_token");
@@ -48,10 +50,17 @@ export async function refreshSpotifyToken(req: Request, res: Response) {
         res.send({
           access_token: access_token,
         });
+        context.db.Spotify.updateOne({
+          where: {
+            id: "1",
+          },
+          data: {
+            token: access_token,
+          },
+        });
       }
     })
     .catch((err) => {
-      console.log();
       res.json(err.response.data);
     });
 }
