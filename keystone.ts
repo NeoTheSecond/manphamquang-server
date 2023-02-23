@@ -32,7 +32,12 @@ export default withAuth(
     server: {
       port: process.env.PORT || 3001,
       cors: {
-        origin: ["http://localhost:3001", "http://localhost:3000", "*"],
+        origin: [
+          "http://localhost:3001",
+          "http://localhost:3000",
+          /\.?manphamquang(.*)\.com/,
+          /\.?manphamquang-legacy(.*)\.vercel\.app/,
+        ],
         credentials: true,
       },
       extendExpressApp(app, context) {
