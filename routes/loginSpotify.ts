@@ -17,7 +17,8 @@ export async function loginSpotify(req: Request, res: Response) {
   res.cookie(process.env.SPOTIFY_STATE_KEY, state);
 
   // your application requests authorization
-  var scope = "user-read-private user-read-email user-read-currently-playing";
+  var scope =
+    "user-read-private user-read-email user-read-currently-playing user-read-recently-played";
 
   res.redirect(
     "https://accounts.spotify.com/authorize?" +
