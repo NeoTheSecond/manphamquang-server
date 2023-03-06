@@ -167,7 +167,8 @@ type Post {
   title: String
   status: String
   content: Post_content_Document
-  publishDate: DateTime
+  postedOn: DateTime
+  slug: String
   author: User
   tags(where: TagWhereInput! = {}, orderBy: [TagOrderByInput!]! = [], take: Int, skip: Int! = 0): [Tag!]
   tagsCount(where: TagWhereInput! = {}): Int
@@ -181,6 +182,7 @@ scalar DateTime @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339
 
 input PostWhereUniqueInput {
   id: ID
+  slug: String
 }
 
 input PostWhereInput {
@@ -190,7 +192,8 @@ input PostWhereInput {
   id: IDFilter
   title: StringFilter
   status: StringNullableFilter
-  publishDate: DateTimeNullableFilter
+  postedOn: DateTimeNullableFilter
+  slug: StringFilter
   author: UserWhereInput
   tags: TagManyRelationFilter
 }
@@ -245,14 +248,16 @@ input PostOrderByInput {
   id: OrderDirection
   title: OrderDirection
   status: OrderDirection
-  publishDate: OrderDirection
+  postedOn: OrderDirection
+  slug: OrderDirection
 }
 
 input PostUpdateInput {
   title: String
   status: String
   content: JSON
-  publishDate: DateTime
+  postedOn: DateTime
+  slug: String
   author: UserRelateToOneForUpdateInput
   tags: TagRelateToManyForUpdateInput
 }
@@ -279,7 +284,8 @@ input PostCreateInput {
   title: String
   status: String
   content: JSON
-  publishDate: DateTime
+  postedOn: DateTime
+  slug: String
   author: UserRelateToOneForCreateInput
   tags: TagRelateToManyForCreateInput
 }

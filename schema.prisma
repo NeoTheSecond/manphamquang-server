@@ -27,14 +27,15 @@ model User {
 }
 
 model Post {
-  id          String    @id @default(uuid()) @postgresql.Uuid
-  title       String    @default("")
-  status      String?   @default("draft")
-  content     Json      @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
-  publishDate DateTime?
-  author      User?     @relation("Post_author", fields: [authorId], references: [id])
-  authorId    String?   @map("author") @postgresql.Uuid
-  tags        Tag[]     @relation("Post_tags")
+  id       String    @id @default(uuid()) @postgresql.Uuid
+  title    String    @default("")
+  status   String?   @default("draft")
+  content  Json      @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  postedOn DateTime? @default(now())
+  slug     String    @unique @default("")
+  author   User?     @relation("Post_author", fields: [authorId], references: [id])
+  authorId String?   @map("author") @postgresql.Uuid
+  tags     Tag[]     @relation("Post_tags")
 
   @@index([authorId])
 }

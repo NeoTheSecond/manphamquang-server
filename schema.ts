@@ -19,6 +19,14 @@ import { allowAll } from "@keystone-6/core/access";
 // that Typescript cannot easily infer.
 import { Lists } from ".keystone/types";
 
+function buildSlug(input: string) {
+  return input
+    .trim()
+    .toLowerCase()
+    .replace(/[^\w ]+/g, "")
+    .replace(/ +/g, "-");
+}
+
 // We have a users list, a blogs list, and tags for blog posts, so they can be filtered.
 // Each property on the exported object will become the name of a list (a.k.a. the `listKey`),
 // with the value being the definition of the list, including the fields.
@@ -63,7 +71,7 @@ export const lists: Lists = {
   Post: list({
     access: allowAll,
     fields: {
-      title: text(),
+      title: text({ validation: { isRequired: true } }),
       // Having the status here will make it easy for us to choose whether to display
       // posts on a live site.
       status: select({
@@ -93,7 +101,17 @@ export const lists: Lists = {
         links: true,
         dividers: true,
       }),
-      publishDate: timestamp(),
+      postedOn: timestamp({
+        defaultValue: { kind: "now" },
+      }),
+      slug: text({
+        isIndexed: "unique",
+        isFilterable: true,
+        ui: {
+          createView: { fieldMode: "hidden" },
+          itemView: { fieldMode: "read" },
+        },
+      }),
       // Here is the link from post => author.
       // We've configured its UI display quite a lot to make the experience of editing posts better.
       author: relationship({
@@ -120,12 +138,26 @@ export const lists: Lists = {
         many: true,
       }),
     },
+    hooks: {
+      resolveInput: ({ resolvedData, operation, inputData }) => {
+        const { title } = resolvedData;
+        if (title) {
+          return {
+            ...resolvedData,
+            // Ensure the first letter of the title is capitalised
+            slug: buildSlug(title),
+          };
+        }
+        // We always return resolvedData from the resolveInput hook
+        return resolvedData;
+      },
+    },
   }),
   // Our final list is the tag list. This field is just a name and a relationship to posts
   Tag: list({
     access: allowAll,
     ui: {
-      isHidden: true,
+      isHidden: false,
     },
     fields: {
       name: text(),
