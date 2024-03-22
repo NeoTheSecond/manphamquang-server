@@ -1,0 +1,26 @@
+services:
+  web:
+    depends_on:
+      - db
+    build: .
+    ports:
+      - "3001:3001"
+    environment:
+      DATABASE_URL: postgres://postgres:admin1234@db:5432/keystone
+
+  db:
+    image: postgres
+    restart: always
+    # expose:
+    #   - 5432
+    # ports:
+    #   - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=admin1234
+      - POSTGRES_DB=keystone
+
+    # healthcheck:
+    #   test: [“CMD-SHELL”, “pg_isready”]
+    #   interval: 1s
+    #   timeout: 5s
+    #   retries: 10

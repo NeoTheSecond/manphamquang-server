@@ -12,6 +12,7 @@ import {
 import { document } from "@keystone-6/fields-document";
 import { cloudinaryImage } from "@keystone-6/cloudinary";
 import { allowAll } from "@keystone-6/core/access";
+import { componentBlocks } from "./admin/components/component-blocks";
 
 // We are using Typescript, and we want our types experience to be as strict as it can be.
 // By providing the Keystone generated `Lists` type to our lists object, we refine
@@ -100,6 +101,10 @@ export const lists: Lists = {
         ],
         links: true,
         dividers: true,
+        // ui: {
+        //   views: "./admin/components/component-blocks",
+        // },
+        // componentBlocks,
       }),
       postedOn: timestamp({
         defaultValue: { kind: "now" },
