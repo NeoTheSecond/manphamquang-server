@@ -8,6 +8,7 @@ import {
   password,
   timestamp,
   select,
+  calendarDay,
 } from "@keystone-6/core/fields";
 import { document } from "@keystone-6/fields-document";
 import { cloudinaryImage } from "@keystone-6/cloudinary";
@@ -187,7 +188,13 @@ export const lists: Lists = {
       location: text(),
       type: text(), // should use select
       duration: text(),
-      description: text(),
+      startDate: calendarDay({ db: { isNullable: true } }),
+      endDate: calendarDay({ db: { isNullable: true } }),
+      description: text({
+        ui: {
+          displayMode: "textarea",
+        },
+      }),
       cover_image: cloudinaryImage({
         cloudinary: {
           cloudName: process.env.CLOUDINARY_CLOUD_NAME,
@@ -208,6 +215,24 @@ export const lists: Lists = {
         },
         many: true,
       }),
+    },
+    hooks: {
+      validateInput: ({
+        resolvedData,
+        addValidationError,
+        inputData,
+        item,
+      }) => {
+        const startDate = inputData.startDate; // TODO: FIX THE UPDATE SINGLE FIELD BUG
+        const endDate = inputData.endDate;
+
+        if (startDate && endDate && startDate > endDate) {
+          addValidationError("The start date cannot be after the end date.");
+        }
+        if (!startDate && endDate) {
+          addValidationError("Must provide start date if you have end date.");
+        }
+      },
     },
   }),
   Technology: list({

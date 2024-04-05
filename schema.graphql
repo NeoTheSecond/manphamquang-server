@@ -445,11 +445,15 @@ type Experience {
   location: String
   type: String
   duration: String
+  startDate: CalendarDay
+  endDate: CalendarDay
   description: String
   cover_image: CloudinaryImage_File
   technologies(where: TechnologyWhereInput! = {}, orderBy: [TechnologyOrderByInput!]! = [], take: Int, skip: Int! = 0): [Technology!]
   technologiesCount(where: TechnologyWhereInput! = {}): Int
 }
+
+scalar CalendarDay @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
 
 input ExperienceWhereUniqueInput {
   id: ID
@@ -464,8 +468,21 @@ input ExperienceWhereInput {
   location: StringFilter
   type: StringFilter
   duration: StringFilter
+  startDate: CalendarDayNullableFilter
+  endDate: CalendarDayNullableFilter
   description: StringFilter
   technologies: TechnologyManyRelationFilter
+}
+
+input CalendarDayNullableFilter {
+  equals: CalendarDay
+  in: [CalendarDay!]
+  notIn: [CalendarDay!]
+  lt: CalendarDay
+  lte: CalendarDay
+  gt: CalendarDay
+  gte: CalendarDay
+  not: CalendarDayNullableFilter
 }
 
 input TechnologyManyRelationFilter {
@@ -480,6 +497,8 @@ input ExperienceOrderByInput {
   location: OrderDirection
   type: OrderDirection
   duration: OrderDirection
+  startDate: OrderDirection
+  endDate: OrderDirection
   description: OrderDirection
 }
 
@@ -488,6 +507,8 @@ input ExperienceUpdateInput {
   location: String
   type: String
   duration: String
+  startDate: CalendarDay
+  endDate: CalendarDay
   description: String
   cover_image: Upload
   technologies: TechnologyRelateToManyForUpdateInput
@@ -510,6 +531,8 @@ input ExperienceCreateInput {
   location: String
   type: String
   duration: String
+  startDate: CalendarDay
+  endDate: CalendarDay
   description: String
   cover_image: Upload
   technologies: TechnologyRelateToManyForCreateInput

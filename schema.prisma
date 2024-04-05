@@ -60,6 +60,8 @@ model Experience {
   location     String       @default("")
   type         String       @default("")
   duration     String       @default("")
+  startDate    DateTime?    @postgresql.Date
+  endDate      DateTime?    @postgresql.Date
   description  String       @default("")
   cover_image  Json?
   technologies Technology[] @relation("Technology_experiences")

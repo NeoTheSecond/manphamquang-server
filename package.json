@@ -1,12 +1,13 @@
 {
   "name": "keystone-app",
-  "version": "1.0.0",
+  "version": "0.0.2-alpha",
   "private": true,
   "scripts": {
     "dev": "keystone dev",
     "start": "keystone start",
     "build": "keystone build",
-    "postinstall": "keystone postinstall"
+    "postinstall": "keystone postinstall",
+    "version": "echo $npm_package_version"
   },
   "dependencies": {
     "@keystone-6/auth": "^6.0.0",
