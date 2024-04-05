@@ -96,7 +96,7 @@ type User {
   name: String
   email: String
   password: PasswordState
-  posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0): [Post!]
+  posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
   postsCount(where: PostWhereInput! = {}): Int
 }
 
@@ -170,7 +170,7 @@ type Post {
   postedOn: DateTime
   slug: String
   author: User
-  tags(where: TagWhereInput! = {}, orderBy: [TagOrderByInput!]! = [], take: Int, skip: Int! = 0): [Tag!]
+  tags(where: TagWhereInput! = {}, orderBy: [TagOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TagWhereUniqueInput): [Tag!]
   tagsCount(where: TagWhereInput! = {}): Int
 }
 
@@ -210,21 +210,7 @@ input StringNullableFilter {
   startsWith: String
   endsWith: String
   mode: QueryMode
-  not: NestedStringNullableFilter
-}
-
-input NestedStringNullableFilter {
-  equals: String
-  in: [String!]
-  notIn: [String!]
-  lt: String
-  lte: String
-  gt: String
-  gte: String
-  contains: String
-  startsWith: String
-  endsWith: String
-  not: NestedStringNullableFilter
+  not: StringNullableFilter
 }
 
 input DateTimeNullableFilter {
@@ -303,7 +289,7 @@ input TagRelateToManyForCreateInput {
 type Tag {
   id: ID!
   name: String
-  posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0): [Post!]
+  posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
   postsCount(where: PostWhereInput! = {}): Int
 }
 
@@ -449,7 +435,7 @@ type Experience {
   endDate: CalendarDay
   description: String
   cover_image: CloudinaryImage_File
-  technologies(where: TechnologyWhereInput! = {}, orderBy: [TechnologyOrderByInput!]! = [], take: Int, skip: Int! = 0): [Technology!]
+  technologies(where: TechnologyWhereInput! = {}, orderBy: [TechnologyOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TechnologyWhereUniqueInput): [Technology!]
   technologiesCount(where: TechnologyWhereInput! = {}): Int
 }
 
@@ -664,25 +650,25 @@ input CreateInitialUserInput {
 }
 
 type Query {
-  spotifies(where: SpotifyWhereInput! = {id: {equals: 1}}, orderBy: [SpotifyOrderByInput!]! = [], take: Int, skip: Int! = 0): [Spotify!]
+  spotifies(where: SpotifyWhereInput! = {id: {equals: 1}}, orderBy: [SpotifyOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: SpotifyWhereUniqueInput): [Spotify!]
   spotify(where: SpotifyWhereUniqueInput! = {id: 1}): Spotify
   spotifiesCount(where: SpotifyWhereInput! = {id: {equals: 1}}): Int
-  users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0): [User!]
+  users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
   user(where: UserWhereUniqueInput!): User
   usersCount(where: UserWhereInput! = {}): Int
-  posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0): [Post!]
+  posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
   post(where: PostWhereUniqueInput!): Post
   postsCount(where: PostWhereInput! = {}): Int
-  tags(where: TagWhereInput! = {}, orderBy: [TagOrderByInput!]! = [], take: Int, skip: Int! = 0): [Tag!]
+  tags(where: TagWhereInput! = {}, orderBy: [TagOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TagWhereUniqueInput): [Tag!]
   tag(where: TagWhereUniqueInput!): Tag
   tagsCount(where: TagWhereInput! = {}): Int
-  educations(where: EducationWhereInput! = {}, orderBy: [EducationOrderByInput!]! = [], take: Int, skip: Int! = 0): [Education!]
+  educations(where: EducationWhereInput! = {}, orderBy: [EducationOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: EducationWhereUniqueInput): [Education!]
   education(where: EducationWhereUniqueInput!): Education
   educationsCount(where: EducationWhereInput! = {}): Int
-  experiences(where: ExperienceWhereInput! = {}, orderBy: [ExperienceOrderByInput!]! = [], take: Int, skip: Int! = 0): [Experience!]
+  experiences(where: ExperienceWhereInput! = {}, orderBy: [ExperienceOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ExperienceWhereUniqueInput): [Experience!]
   experience(where: ExperienceWhereUniqueInput!): Experience
   experiencesCount(where: ExperienceWhereInput! = {}): Int
-  technologies(where: TechnologyWhereInput! = {}, orderBy: [TechnologyOrderByInput!]! = [], take: Int, skip: Int! = 0): [Technology!]
+  technologies(where: TechnologyWhereInput! = {}, orderBy: [TechnologyOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TechnologyWhereUniqueInput): [Technology!]
   technology(where: TechnologyWhereUniqueInput!): Technology
   technologiesCount(where: TechnologyWhereInput! = {}): Int
   keystone: KeystoneMeta!
@@ -727,6 +713,7 @@ type KeystoneAdminUIFieldMeta {
   description: String
   isOrderable: Boolean!
   isFilterable: Boolean!
+  isNonNull: [KeystoneAdminUIFieldMetaIsNonNull!]
   fieldMeta: JSON
   viewsIndex: Int!
   customViewsIndex: Int
@@ -734,6 +721,12 @@ type KeystoneAdminUIFieldMeta {
   listView: KeystoneAdminUIFieldMetaListView!
   itemView(id: ID): KeystoneAdminUIFieldMetaItemView
   search: QueryMode
+}
+
+enum KeystoneAdminUIFieldMetaIsNonNull {
+  read
+  create
+  update
 }
 
 type KeystoneAdminUIFieldMetaCreateView {
