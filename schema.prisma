@@ -67,10 +67,24 @@ model Experience {
 }
 
 model Technology {
-  id            String      @id @default(uuid()) @postgresql.Uuid
-  name          String      @default("")
-  experiences   Experience? @relation("Technology_experiences", fields: [experiencesId], references: [id])
-  experiencesId String?     @map("experiences") @postgresql.Uuid
+  id            String               @id @default(uuid()) @postgresql.Uuid
+  name          String               @default("")
+  experiences   Experience?          @relation("Technology_experiences", fields: [experiencesId], references: [id])
+  experiencesId String?              @map("experiences") @postgresql.Uuid
+  color         TechnologyColorType?
 
   @@index([experiencesId])
+}
+
+enum TechnologyColorType {
+  red
+  gray
+  stone
+  orange
+  yellow
+  green
+  teal
+  sky
+  blue
+  purple
 }

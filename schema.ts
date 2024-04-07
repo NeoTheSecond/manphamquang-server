@@ -28,6 +28,19 @@ function buildSlug(input: string) {
     .replace(/ +/g, "-");
 }
 
+const COLORS_OPTIONS = [
+  { label: "Red", value: "red" },
+  { label: "Gray", value: "gray" },
+  { label: "Stone", value: "stone" },
+  { label: "Orange", value: "orange" },
+  { label: "Yellow", value: "yellow" },
+  { label: "Green", value: "green" },
+  { label: "Teal", value: "teal" },
+  { label: "Sky", value: "sky" },
+  { label: "Blue", value: "blue" },
+  { label: "Purple", value: "purple" },
+];
+
 // We have a users list, a blogs list, and tags for blog posts, so they can be filtered.
 // Each property on the exported object will become the name of a list (a.k.a. the `listKey`),
 // with the value being the definition of the list, including the fields.
@@ -240,6 +253,25 @@ export const lists: Lists = {
     fields: {
       name: text(),
       experiences: relationship({ ref: "Experience.technologies" }),
+      color: select({
+        type: "enum",
+        options: COLORS_OPTIONS,
+      }),
+    },
+    hooks: {
+      resolveInput: ({ resolvedData }) => {
+        const { color } = resolvedData;
+        if (!color) {
+          return {
+            ...resolvedData,
+            color:
+              COLORS_OPTIONS[Math.floor(Math.random() * COLORS_OPTIONS.length)]
+                .value,
+          };
+        }
+        // We always return resolvedData from the resolveInput hook
+        return resolvedData;
+      },
     },
   }),
 };

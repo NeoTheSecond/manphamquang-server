@@ -533,6 +533,20 @@ type Technology {
   id: ID!
   name: String
   experiences: Experience
+  color: TechnologyColorType
+}
+
+enum TechnologyColorType {
+  red
+  gray
+  stone
+  orange
+  yellow
+  green
+  teal
+  sky
+  blue
+  purple
 }
 
 input TechnologyWhereUniqueInput {
@@ -546,16 +560,26 @@ input TechnologyWhereInput {
   id: IDFilter
   name: StringFilter
   experiences: ExperienceWhereInput
+  color: TechnologyColorTypeNullableFilter
+}
+
+input TechnologyColorTypeNullableFilter {
+  equals: TechnologyColorType
+  in: [TechnologyColorType!]
+  notIn: [TechnologyColorType!]
+  not: TechnologyColorTypeNullableFilter
 }
 
 input TechnologyOrderByInput {
   id: OrderDirection
   name: OrderDirection
+  color: OrderDirection
 }
 
 input TechnologyUpdateInput {
   name: String
   experiences: ExperienceRelateToOneForUpdateInput
+  color: TechnologyColorType
 }
 
 input ExperienceRelateToOneForUpdateInput {
@@ -572,6 +596,7 @@ input TechnologyUpdateArgs {
 input TechnologyCreateInput {
   name: String
   experiences: ExperienceRelateToOneForCreateInput
+  color: TechnologyColorType
 }
 
 input ExperienceRelateToOneForCreateInput {
