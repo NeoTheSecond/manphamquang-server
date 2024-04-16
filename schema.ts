@@ -252,7 +252,7 @@ export const lists: Lists = {
     access: allowAll,
     fields: {
       name: text(),
-      experiences: relationship({ ref: "Experience.technologies" }),
+      experiences: relationship({ ref: "Experience.technologies", many: true }),
       color: select({
         type: "enum",
         options: COLORS_OPTIONS,

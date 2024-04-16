@@ -63,17 +63,14 @@ model Experience {
   endDate      DateTime?    @postgresql.Date
   description  String       @default("")
   cover_image  Json?
-  technologies Technology[] @relation("Technology_experiences")
+  technologies Technology[] @relation("Experience_technologies")
 }
 
 model Technology {
-  id            String               @id @default(uuid()) @postgresql.Uuid
-  name          String               @default("")
-  experiences   Experience?          @relation("Technology_experiences", fields: [experiencesId], references: [id])
-  experiencesId String?              @map("experiences") @postgresql.Uuid
-  color         TechnologyColorType?
-
-  @@index([experiencesId])
+  id          String               @id @default(uuid()) @postgresql.Uuid
+  name        String               @default("")
+  experiences Experience[]         @relation("Experience_technologies")
+  color       TechnologyColorType?
 }
 
 enum TechnologyColorType {

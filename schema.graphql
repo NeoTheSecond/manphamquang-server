@@ -532,7 +532,8 @@ input TechnologyRelateToManyForCreateInput {
 type Technology {
   id: ID!
   name: String
-  experiences: Experience
+  experiences(where: ExperienceWhereInput! = {}, orderBy: [ExperienceOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ExperienceWhereUniqueInput): [Experience!]
+  experiencesCount(where: ExperienceWhereInput! = {}): Int
   color: TechnologyColorType
 }
 
@@ -559,8 +560,14 @@ input TechnologyWhereInput {
   NOT: [TechnologyWhereInput!]
   id: IDFilter
   name: StringFilter
-  experiences: ExperienceWhereInput
+  experiences: ExperienceManyRelationFilter
   color: TechnologyColorTypeNullableFilter
+}
+
+input ExperienceManyRelationFilter {
+  every: ExperienceWhereInput
+  some: ExperienceWhereInput
+  none: ExperienceWhereInput
 }
 
 input TechnologyColorTypeNullableFilter {
@@ -578,14 +585,15 @@ input TechnologyOrderByInput {
 
 input TechnologyUpdateInput {
   name: String
-  experiences: ExperienceRelateToOneForUpdateInput
+  experiences: ExperienceRelateToManyForUpdateInput
   color: TechnologyColorType
 }
 
-input ExperienceRelateToOneForUpdateInput {
-  create: ExperienceCreateInput
-  connect: ExperienceWhereUniqueInput
-  disconnect: Boolean
+input ExperienceRelateToManyForUpdateInput {
+  disconnect: [ExperienceWhereUniqueInput!]
+  set: [ExperienceWhereUniqueInput!]
+  create: [ExperienceCreateInput!]
+  connect: [ExperienceWhereUniqueInput!]
 }
 
 input TechnologyUpdateArgs {
@@ -595,13 +603,13 @@ input TechnologyUpdateArgs {
 
 input TechnologyCreateInput {
   name: String
-  experiences: ExperienceRelateToOneForCreateInput
+  experiences: ExperienceRelateToManyForCreateInput
   color: TechnologyColorType
 }
 
-input ExperienceRelateToOneForCreateInput {
-  create: ExperienceCreateInput
-  connect: ExperienceWhereUniqueInput
+input ExperienceRelateToManyForCreateInput {
+  create: [ExperienceCreateInput!]
+  connect: [ExperienceWhereUniqueInput!]
 }
 
 """
