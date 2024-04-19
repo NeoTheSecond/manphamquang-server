@@ -12,7 +12,7 @@ export function CustomNavigation({
     <NavigationContainer authenticatedItem={authenticatedItem}>
       <NavItem href="/">Dashboard</NavItem>
       <ListNavItems lists={lists} />
-      <NavItem href="/login-spotify">Login Spotify</NavItem>
+      <NavItem href="/login-spotify">Login Spotify 2</NavItem>
     </NavigationContainer>
   );
 }
