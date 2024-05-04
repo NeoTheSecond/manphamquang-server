@@ -19,6 +19,7 @@ import { allowAll } from "@keystone-6/core/access";
 // our types to a stricter subset that is type-aware of other lists in our schema
 // that Typescript cannot easily infer.
 import { Lists } from ".keystone/types";
+import { componentBlocks } from "./src/components/component-blocks.jsx";
 
 function buildSlug(input: string) {
   return input
@@ -114,6 +115,10 @@ export const lists: Lists = {
         ],
         links: true,
         dividers: true,
+        ui: {
+          views: "./src/components/component-blocks",
+        },
+        componentBlocks,
       }),
       postedOn: timestamp({
         defaultValue: { kind: "now" },
