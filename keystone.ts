@@ -17,6 +17,9 @@ import { withAuth, session } from "./auth";
 import { refreshSpotifyToken } from "./routes/refreshSpotifyToken";
 import callback from "./routes/callback";
 import { loginSpotify } from "./routes/loginSpotify";
+import { uploadImageToCloudinary } from "./routes/uploadImageToCloudinary";
+
+var fileUpload = require("express-fileupload");
 var cookieParser = require("cookie-parser");
 
 export default withAuth(
@@ -42,6 +45,7 @@ export default withAuth(
       },
       extendExpressApp(app, context) {
         app.use(cookieParser());
+        app.use(fileUpload());
         app.use("/spotify", async (req, res, next) => {
           /*
           WARNING: normally if you're adding custom properties to an
@@ -53,9 +57,15 @@ export default withAuth(
           next();
         });
 
+        app.use("/upload_document_image", async (req, res, next) => {
+          (req as any).context = await context.withRequest(req, res);
+          next();
+        });
+
         app.get("/login", loginSpotify);
         app.get("/spotify/callback", callback);
         app.get("/spotify/refresh_spotify_token", refreshSpotifyToken);
+        app.post("/upload_document_image", uploadImageToCloudinary);
       },
     },
     images: {
